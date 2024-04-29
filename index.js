@@ -60,7 +60,7 @@ async function run() {
 
 
 
-    
+
     // read specific id's craft item
    
     app.get('/craft_item_detail/:id', async (req, res) => {
@@ -86,6 +86,8 @@ async function run() {
       res.send(result)
     })
 
+
+    
     // update specific id's data
     app.put('/update_craft_item/:id', async (req, res) => {
       const id = req.params.id;
