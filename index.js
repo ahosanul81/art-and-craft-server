@@ -58,6 +58,9 @@ async function run() {
     })
 
 
+
+
+    
     // read specific id's craft item
    
     app.get('/craft_item_detail/:id', async (req, res) => {
