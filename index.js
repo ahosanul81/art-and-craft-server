@@ -27,8 +27,6 @@ const client = new MongoClient(uri, {
 });
 
 
-
-
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -44,8 +42,6 @@ async function run() {
       res.send(result)
     })
 
-
-    
     // read by specific email
     app.get('/craft_items', async (req, res) => {
       const email = req.query.email;
