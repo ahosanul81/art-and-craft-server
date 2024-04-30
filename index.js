@@ -10,10 +10,6 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 app.use(cors())
 app.use(express.json())
 
-
-console.log(process.env.DB_USER);
-console.log(process.env.DB_PASS);
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jhmpwvf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -31,8 +27,8 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
 
     const craftItemCollection = client.db("craftItemDB").collection("craftItem");
-
-
+    const UpComing = client.db("craftItemDB").collection("upComingItem");
+    const ScholarsCollection = client.db("craftItemDB").collection("scholarsCollection");
     // read added craft item
     app.get('/craft_items', async (req, res) => {
       const cursor = craftItemCollection.find()
@@ -55,7 +51,20 @@ async function run() {
       res.send(result)
     })
 
+    // read upcoming item 
+    app.get('/up_coming_item', async(req, res)=>{
+      const cursor = UpComing.find()
+      const result = await cursor.toArray()
+      res.send(result)
+    })
 
+    // read scholars
+    app.get('/our_scholars', async(req, res)=>{
+      const cursor = ScholarsCollection.find()
+      const result = await cursor.toArray()
+      console.log(result);
+      res.send(result)
+    })
     // read specific id's craft item
    
     app.get('/craft_item_detail/:id', async (req, res) => {
@@ -71,6 +80,25 @@ async function run() {
       const result = await craftItemCollection.findOne(query)
       res.send(result)
     })
+
+    // read based on subcategory embroidery
+    app.get('/category_based_item/:categoryArt', async(req, res) => {
+      const categoryArt = req.params.categoryArt;
+      const query = { subCategoryName: categoryArt }
+      const result =await craftItemCollection.find(query).toArray();
+      res.send(result)
+    })
+
+    // read based on customization
+    app.get('/my_art_and_craft/customization/:customization', async(req, res) => {
+      const customization = req.params.customization;
+      console.log(customization, 'paici');
+      const query = { customization: customization }
+      const result = await craftItemCollection.find(query).toArray();
+      console.log(result);
+      res.send(result)
+    })
+
 
     app.delete('/craft_items/:id', async (req, res) => {
       const id = req.params.id
@@ -112,7 +140,6 @@ async function run() {
     })
 
 
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
 
   }
